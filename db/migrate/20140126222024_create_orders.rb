@@ -4,6 +4,8 @@ class CreateOrders < ActiveRecord::Migration
       t.integer :item_id
       t.integer :customer_id
       t.integer :merchant_id
+      t.integer :invoice_id
+      t.integer :quantity
 
       t.timestamps
     end

@@ -1,0 +1,12 @@
+<% @invoices.each do |invoice| %>
+  <div>
+    <%= link_to invoice.id, invoice_path(invoice.id) %>
+  </div>
+<% end %>
+
+<div id="create_invoice_form">
+  <%= form_for @invoice, :url => invoices_path, :html => {:method => :post, :multipart => true, :id => "invoice"} do |f| %>
+    <label for="file">File to Upload</label> <%= file_field_tag "invoice" %>
+    <%= f.submit 'Upload file', :class => "button primary" %>
+   <% end %>
+</div>
