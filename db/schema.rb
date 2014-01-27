@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20140126225253) do
 
   create_table "invoices", force: true do |t|
     t.text     "order_ids"
+    t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -35,7 +36,7 @@ ActiveRecord::Schema.define(version: 20140126225253) do
 
   create_table "orders", force: true do |t|
     t.integer  "item_id"
-    t.integer  "customer_id"
+    t.integer  "purchaser_id"
     t.integer  "merchant_id"
     t.integer  "invoice_id"
     t.integer  "quantity"

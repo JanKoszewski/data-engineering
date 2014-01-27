@@ -11,7 +11,10 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    raise CSV.parse(params["upload"].read).inspect
-
+    if params["invoice"]
+      Invoice.create_and_store(params["invoice"])
+    else
+      redirect_to index
+    end
   end
 end
