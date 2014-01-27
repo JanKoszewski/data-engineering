@@ -1,0 +1,21 @@
+<table>
+  <thead>
+    <tr>
+      <td class="item_description">Item Description</td>
+      <td class="item_description">Price</td>
+      <td class="item_description">Quantity</td>
+      <td class="item_description">Revene</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invoice.orders.each do |order| %>
+    <tr>
+      <td><%= order.item.description %></td>
+      <td>$<%= order.item.price %></td>
+      <td><%= order.quantity %></td>
+      <td>$<%= order.revenue %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+Total Revenue: $<%= @invoice.revenue %>

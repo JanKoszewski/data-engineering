@@ -3,16 +3,24 @@ class Invoice < ActiveRecord::Base
 
   has_many :orders
 
-  def self.create_and_store(invoice_file)
-    invoice = new(filename: invoice_file.original_filename)
+  attr_accessor :parsed_file, :completed_orders
 
-    invoice.create_parsed_file(invoice_file)
-    invoice.create_hashed_orders!
-    invoice.create_orders!
+  def self.create_and_store(invoice_file)
+    invoice = create!(filename: invoice_file.original_filename)
+
+    if invoice.create_parsed_file(invoice_file)
+      invoice.create_hashed_orders!
+      invoice.create_orders!(invoice.id)
+    else
+      false
+    end
   end
 
   def create_parsed_file(invoice_file)
     @parsed_file = CSV.parse(invoice_file.read)
+  rescue => e
+    Rails.logger.error "****** #{e.message} ******"
+    return false
   end
 
   def create_hashed_orders!
@@ -26,10 +34,14 @@ class Invoice < ActiveRecord::Base
     end
   end
 
-  def create_orders!
+  def create_orders!(invoice_id)
     @hashed_orders.each do |order|
-      Order.create_order_and_associations(order)
+       Order.create_order_and_associations(order, invoice_id)
     end
+  end
+
+  def revenue
+    self.orders.sum(&:revenue)
   end
 
 end

@@ -11,9 +11,10 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    if params["invoice"]
-      Invoice.create_and_store(params["invoice"])
+    if params["invoice"] && Invoice.create_and_store(params["invoice"])
+      redirect_to index
     else
+      flash[:error] = "Incorrect filetype, please used tab delimited records"
       redirect_to index
     end
   end
